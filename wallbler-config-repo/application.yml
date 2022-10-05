@@ -1,0 +1,14 @@
+spring:
+  rabbitmq:
+    cloud:
+      stream:
+        bindings:
+          auditCreateEventInput:
+            binder: rabbit
+            destination: audit.exchange
+            contentType: application/json
+            group: audit-service
+#  rabbitmq:
+#    cloud:
+#      stream:
+#        bindings:

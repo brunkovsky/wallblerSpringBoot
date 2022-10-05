@@ -1,0 +1,8 @@
+user:
+  role: Developer5
+
+listConf:
+  - name: valery
+    lastName: bianko
+  - name: thomas
+    lastName: karo

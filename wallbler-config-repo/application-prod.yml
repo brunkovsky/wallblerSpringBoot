@@ -1,0 +1,8 @@
+user:
+  role: User
+
+listConf:
+  - name: sasha
+    lastName: snow
+  - name: alex
+    lastName: vator

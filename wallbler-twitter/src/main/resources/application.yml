@@ -1,0 +1,56 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: wallblertwitter
+  datasource:
+    url: "jdbc:mariadb://192.168.1.14:3306/data"
+    username: "pi"
+    password: "141292"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.MySQL5Dialect"
+        format_sql: true
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      bindings:
+        worksChannel:
+          binder: rabbit2
+          destination: work.exchange
+          contentType: application/json
+          group: testgroup
+      binders:
+        rabbit2:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                virtual-host: rab2
+
+management:
+  endpoints:
+    web:
+      base-path: "/twitter"
+      exposure:
+        include: "*"
+
+wallbler:
+  type: TWITTER
+
+tempProperties:
+  aaa: 5
+  bbb: 6
+  x: true
+  y: false
