@@ -22,10 +22,10 @@ public class WallblerService {
 
 
     public void fetch(String feedName) {
-        FacebookFeedConfig feedConfig = feedRepository.findByFeedName(feedName);
-        FacebookAccountConfig accountConfig = accountRepository.findByAccountName(feedConfig.getAccountName());
-        FeedType feedType = feedMap.get(feedConfig.getFeedType().name());
-        connector.loadData(accountConfig, feedType);
+//        FacebookFeedConfig feedConfig = feedRepository.findByFeedName(feedName);
+//        FacebookAccountConfig accountConfig = accountRepository.findByAccountName(feedConfig.getAccountName());
+//        FeedType feedType = feedMap.get(feedConfig.getFeedType().name());
+//        connector.loadData(accountConfig, feedType);
     }
 
 }

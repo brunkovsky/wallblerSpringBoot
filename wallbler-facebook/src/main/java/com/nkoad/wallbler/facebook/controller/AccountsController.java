@@ -1,5 +1,6 @@
 package com.nkoad.wallbler.facebook.controller;
 
+import com.nkoad.wallbler.facebook.model.account.FacebookAccountConfig;
 import com.nkoad.wallbler.facebook.model.account.FacebookAccountConfigDto;
 import com.nkoad.wallbler.facebook.service.account.AccountsService;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(path = "api/wallbler/facebook/accounts")
+@RequestMapping(path = "api/wallbler/facebook/account")
 public class AccountsController {
 
     private final AccountsService service;
@@ -19,9 +20,24 @@ public class AccountsController {
         return service.getAccounts();
     }
 
+    @GetMapping(path = "/{name}")
+    public FacebookAccountConfigDto getAccountById(@PathVariable String name) {
+        return service.getAccountByName(name);
+    }
+
     @PostMapping
-    public void setAccount(@RequestBody FacebookAccountConfigDto accountConfigDto) {
-        service.saveAccount(accountConfigDto);
+    public FacebookAccountConfig saveAccount(@RequestBody FacebookAccountConfigDto accountConfigDto) {
+        return service.saveAccount(accountConfigDto);
+    }
+
+    @PutMapping
+    public FacebookAccountConfig editAccountById(@RequestBody FacebookAccountConfigDto accountConfigDto) {
+        return service.editAccountByName(accountConfigDto);
+    }
+
+    @DeleteMapping(path = "/{name}")
+    public void delAccountById(@PathVariable String name) {
+        service.delAccountByName(name);
     }
 
 }

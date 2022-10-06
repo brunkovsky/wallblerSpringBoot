@@ -14,7 +14,8 @@ public abstract class FacebookAccountConfigMapper {
     protected FacebookAccountValidator accountValidator;
 
     @Mapping(target = "valid", expression = "java(accountValidator.validate(accountConfigDto))")
-    public abstract FacebookAccountConfig accountConfigDtoToAccountConfig (FacebookAccountConfigDto accountConfigDto);
-    public abstract FacebookAccountConfigDto accountConfigToAccountConfigDto (FacebookAccountConfig accountConfig);
+    public abstract FacebookAccountConfig accountConfigDtoToAccountConfig(FacebookAccountConfigDto accountConfigDto);
+
+    public abstract FacebookAccountConfigDto accountConfigToAccountConfigDto(FacebookAccountConfig accountConfig);
 
 }

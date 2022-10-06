@@ -14,5 +14,6 @@ public class FacebookAccountConfigDto {
     private String accountName;
     private String accessToken;
     private String groupId;
+    private boolean valid;
 
 }

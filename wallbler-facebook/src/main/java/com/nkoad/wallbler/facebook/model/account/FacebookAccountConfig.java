@@ -5,11 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -19,13 +15,7 @@ import javax.persistence.SequenceGenerator;
 public class FacebookAccountConfig {
 
     @Id
-    @SequenceGenerator(
-            name = "facebook_account_id_sequence",
-            sequenceName = "facebook_account_id_sequence")
-    @GeneratedValue(
-            strategy = GenerationType.AUTO,
-            generator = "facebook_account_id_sequence")
-    private Integer id;
+    @Column(length = 128)
     private String accountName;
     private String accessToken;
     private String groupId;

@@ -11,7 +11,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping(path = "api/wallbler/facebook/feeds")
+@RequestMapping(path = "api/wallbler/facebook/feed")
 public class FeedsController {
 
     private final FeedsService service;
