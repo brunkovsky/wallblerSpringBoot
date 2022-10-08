@@ -1,6 +1,6 @@
 package com.nkoad.wallbler.facebook.controller;
 
-import com.nkoad.wallbler.facebook.model.feed.FacebookFeedConfigDto;
+import com.nkoad.wallbler.facebook.model.feed.FacebookFeedDto;
 import com.nkoad.wallbler.facebook.service.feed.FeedsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +17,12 @@ public class FeedsController {
     private final FeedsService service;
 
     @GetMapping
-    public List<FacebookFeedConfigDto> getFeeds() {
+    public List<FacebookFeedDto> getFeeds() {
         return service.getFeeds();
     }
 
     @PostMapping
-    public void setFeed(@RequestBody FacebookFeedConfigDto feedConfigDto) {
-        service.saveFeed(feedConfigDto);
+    public void setFeed(@RequestBody FacebookFeedDto facebookFeedDto) {
+        service.saveFeed(facebookFeedDto);
     }
 }

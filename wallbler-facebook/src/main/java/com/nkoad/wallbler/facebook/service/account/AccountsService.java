@@ -1,8 +1,8 @@
 package com.nkoad.wallbler.facebook.service.account;
 
-import com.nkoad.wallbler.facebook.mapper.FacebookAccountConfigMapper;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountConfig;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountConfigDto;
+import com.nkoad.wallbler.facebook.mapper.FacebookAccountMapper;
+import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
+import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
 import com.nkoad.wallbler.facebook.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,46 +19,47 @@ import java.util.stream.Collectors;
 public class AccountsService {
 
     private final AccountRepository accountRepository;
-    private final FacebookAccountConfigMapper accountConfigMapper;
+    private final FacebookAccountMapper facebookAccountMapper;
 
 
-    public List<FacebookAccountConfigDto> getAccounts() {
+    public List<FacebookAccountDto> getAccounts() {
         return accountRepository.findAll()
                 .stream()
-                .map(accountConfigMapper::accountConfigToAccountConfigDto)
+                .map(facebookAccountMapper::accountToAccountDto)
                 .collect(Collectors.toList());
     }
 
-    public FacebookAccountConfigDto getAccountByName(String name) {
-        FacebookAccountConfig accountConfig = accountRepository.getOne(name);
-        return accountConfigMapper.accountConfigToAccountConfigDto(accountConfig);
+    public FacebookAccountDto getAccountByName(String name) {
+        FacebookAccount facebookAccount = accountRepository.getOne(name);
+        return facebookAccountMapper.accountToAccountDto(facebookAccount);
     }
 
-    public FacebookAccountConfig saveAccount(FacebookAccountConfigDto accountConfigDto) {
-        if (accountAlreadyExists(accountConfigDto)) {
-            throw new IllegalArgumentException("The account already exists: " + accountConfigDto.getAccountName());
+    public FacebookAccount saveAccount(FacebookAccountDto facebookAccountDto) {
+        if (accountAlreadyExists(facebookAccountDto)) {
+            throw new IllegalArgumentException("The account already exists: " + facebookAccountDto.getAccountName());
         }
-        return saveOrUpdateAccount(accountConfigDto);
+        return saveOrUpdateAccount(facebookAccountDto);
     }
 
     public void delAccountByName(String name) {
-        FacebookAccountConfig accountConfig = accountRepository.getOne(name);
-        accountRepository.delete(accountConfig);
+        FacebookAccount facebookAccount = accountRepository.getOne(name);
+        accountRepository.delete(facebookAccount);
     }
 
-    public FacebookAccountConfig editAccountByName(FacebookAccountConfigDto accountConfigDto) {
-        if (accountAlreadyExists(accountConfigDto)) {
-            return saveOrUpdateAccount(accountConfigDto);
+    public FacebookAccount editAccountByName(FacebookAccountDto facebookAccountDto) {
+        if (accountAlreadyExists(facebookAccountDto)) {
+            return saveOrUpdateAccount(facebookAccountDto);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    private FacebookAccountConfig saveOrUpdateAccount(FacebookAccountConfigDto accountConfigDto) {
-        FacebookAccountConfig accountConfig = accountConfigMapper.accountConfigDtoToAccountConfig(accountConfigDto);
-        return accountRepository.save(accountConfig);
+    private FacebookAccount saveOrUpdateAccount(FacebookAccountDto facebookAccountDto) {
+        FacebookAccount facebookAccount = facebookAccountMapper.accountDtoToAccount(facebookAccountDto);
+        return accountRepository.save(facebookAccount);
     }
 
-    private boolean accountAlreadyExists(FacebookAccountConfigDto accountConfigDto) {
-        return accountRepository.existsById(accountConfigDto.getAccountName());
+    private boolean accountAlreadyExists(FacebookAccountDto facebookAccountDto) {
+        return accountRepository.existsById(facebookAccountDto.getAccountName());
     }
+
 }

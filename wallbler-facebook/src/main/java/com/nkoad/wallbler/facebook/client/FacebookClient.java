@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.facebook.client;
 
 import com.nkoad.wallbler.facebook.connector.FeedType;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountConfig;
+import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
 import net.minidev.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +22,11 @@ public interface FacebookClient {
                         @RequestParam("fields") String fields,
                         @RequestParam("type") String type);
 
-    default JSONObject loadData(FacebookAccountConfig accountConfig, FeedType feedType) {
+    default JSONObject loadData(FacebookAccount facebookAccount, FeedType feedType) {
         return loadData(
-                accountConfig.getGroupId(),
+                facebookAccount.getGroupId(),
                 feedType.getEndPoint(),
-                accountConfig.getAccessToken(),
+                facebookAccount.getAccessToken(),
                 feedType.getFields(),
                 feedType.getType());
     }

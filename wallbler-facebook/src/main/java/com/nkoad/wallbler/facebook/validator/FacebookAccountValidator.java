@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.facebook.validator;
 
 import com.nkoad.wallbler.facebook.client.FacebookClient;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountConfigDto;
+import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -15,15 +15,15 @@ public class FacebookAccountValidator {
     private final FacebookClient facebookClient;
 
 
-    public boolean validate(FacebookAccountConfigDto accountConfigDTO) {
+    public boolean validate(FacebookAccountDto facebookAccountDto) {
         try {
-            JSONObject screenName = facebookClient.getScreenName(accountConfigDTO.getGroupId(), accountConfigDTO.getAccessToken());
+            JSONObject screenName = facebookClient.getScreenName(facebookAccountDto.getGroupId(), facebookAccountDto.getAccessToken());
             System.out.println(screenName);
         } catch (Exception e) {
-            log.warn("{} did not pass the validation. set 'valid' to false", accountConfigDTO);
+            log.warn("{} did not pass the validation. set 'valid' to false", facebookAccountDto);
             return false;
         }
-        log.debug("{} passed the validation. set 'valid' to true", accountConfigDTO);
+        log.debug("{} passed the validation. set 'valid' to true", facebookAccountDto);
         return true;
     }
 

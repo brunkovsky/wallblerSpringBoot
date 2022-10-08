@@ -2,8 +2,6 @@ package com.nkoad.wallbler.facebook.service;
 
 import com.nkoad.wallbler.facebook.connector.Connector;
 import com.nkoad.wallbler.facebook.connector.FeedType;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountConfig;
-import com.nkoad.wallbler.facebook.model.feed.FacebookFeedConfig;
 import com.nkoad.wallbler.facebook.repository.AccountRepository;
 import com.nkoad.wallbler.facebook.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
