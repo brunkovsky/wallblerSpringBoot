@@ -18,7 +18,7 @@ import java.util.Date;
 public class WallblerExecutor {
 
     private final WallblerSchedulerRepository schedulerRepository;
-    private final RabbitTemplate commonTemplate;
+    private final RabbitTemplate executeRabbitTemplate;
 
     @Scheduled(cron = "0 * * ? * *")
     public void schedule() {
@@ -37,7 +37,7 @@ public class WallblerExecutor {
     }
 
     private void execute(WallblerScheduler scheduler) {
-        scheduler.getFeedNames().forEach(feedName -> commonTemplate
+        scheduler.getFeedNames().forEach(feedName -> executeRabbitTemplate
                 .convertAndSend(generateExchange(scheduler),
                         generateRoutingKey(scheduler),
                         feedName,

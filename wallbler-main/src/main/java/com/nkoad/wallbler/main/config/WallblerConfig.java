@@ -30,10 +30,8 @@ public class WallblerConfig {
     }
 
     @Bean
-    public RabbitTemplate commonTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setExchange("wallbler-exchange");
-        return rabbitTemplate;
+    public RabbitTemplate executeRabbitTemplate(ConnectionFactory connectionFactory) {
+        return new RabbitTemplate(connectionFactory);
     }
 
 //    @Bean
