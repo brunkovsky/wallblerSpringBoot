@@ -14,8 +14,8 @@ public class WallblerListener {
     private final WallblerTypeService service;
 
     @RabbitListener(queues = "wallbler-type-register")
-    public void wallblerFeedRegister(String wabblerTypeName) {
-        service.registerWallblerType(wabblerTypeName);
+    public void wallblerFeedRegister(String typeName) {
+        service.registerWallblerType(typeName);
     }
 
 }

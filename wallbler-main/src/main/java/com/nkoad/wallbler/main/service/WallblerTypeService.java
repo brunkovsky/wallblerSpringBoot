@@ -11,15 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 public class WallblerTypeService {
 
-    private final WallblerTypeRepository wallblerTypeRepository;
+    private final WallblerTypeRepository typeRepository;
 
 
-    public void registerWallblerType(String wabblerTypeName) {
-        WallblerType wallblerType = new WallblerType(wabblerTypeName, true);
-        wallblerTypeRepository.save(wallblerType);
+    public void registerWallblerType(String typeName) {
+        typeRepository.save(new WallblerType(typeName, true));
     }
 
     public List<WallblerType> getTypes() {
-        return wallblerTypeRepository.findAll();
+        return typeRepository.findAll();
     }
+
 }
