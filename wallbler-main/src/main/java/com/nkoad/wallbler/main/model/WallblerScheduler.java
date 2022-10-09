@@ -22,7 +22,7 @@ public class WallblerScheduler {
 
     private String wallblerType;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> feedNames;
 
     private boolean enabled;
