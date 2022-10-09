@@ -22,7 +22,7 @@ public class AccountsController {
 
     @GetMapping(path = "/{name}")
     public FacebookAccountDto getAccountById(@PathVariable String name) {
-        return service.getAccountByName(name);
+        return service.getAccountById(name);
     }
 
     @PostMapping
@@ -32,12 +32,12 @@ public class AccountsController {
 
     @PutMapping
     public FacebookAccount editAccountById(@RequestBody FacebookAccountDto facebookAccountDto) {
-        return service.editAccountByName(facebookAccountDto);
+        return service.editAccountById(facebookAccountDto);
     }
 
     @DeleteMapping(path = "/{name}")
     public void delAccountById(@PathVariable String name) {
-        service.delAccountByName(name);
+        service.delAccountById(name);
     }
 
 }

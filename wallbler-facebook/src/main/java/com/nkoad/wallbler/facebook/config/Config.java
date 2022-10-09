@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.support.RetryTemplate;
 
 @Configuration
 public class Config {
@@ -25,7 +26,7 @@ public class Config {
 
     @Bean
     public Queue wallblerFacebookQueue() {
-        return new Queue("wallbler-feed-register");
+        return new Queue("wallbler-type-register");
     }
 
     @Bean
@@ -44,9 +45,9 @@ public class Config {
     }
 
     @Bean
-    public RabbitTemplate registerTemplate(ConnectionFactory connectionFactory) {
+        public RabbitTemplate registerTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey("wallbler-feed-register");
+        rabbitTemplate.setRoutingKey("wallbler-type-register");
         return rabbitTemplate;
     }
 

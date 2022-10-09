@@ -29,7 +29,7 @@ public class AccountsService {
                 .collect(Collectors.toList());
     }
 
-    public FacebookAccountDto getAccountByName(String name) {
+    public FacebookAccountDto getAccountById(String name) {
         FacebookAccount facebookAccount = accountRepository.getOne(name);
         return facebookAccountMapper.accountToAccountDto(facebookAccount);
     }
@@ -41,12 +41,12 @@ public class AccountsService {
         return saveOrUpdateAccount(facebookAccountDto);
     }
 
-    public void delAccountByName(String name) {
+    public void delAccountById(String name) {
         FacebookAccount facebookAccount = accountRepository.getOne(name);
         accountRepository.delete(facebookAccount);
     }
 
-    public FacebookAccount editAccountByName(FacebookAccountDto facebookAccountDto) {
+    public FacebookAccount editAccountById(FacebookAccountDto facebookAccountDto) {
         if (accountAlreadyExists(facebookAccountDto)) {
             return saveOrUpdateAccount(facebookAccountDto);
         }

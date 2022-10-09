@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.main.mapper;
 
-import com.nkoad.wallbler.main.model.WallblerSchedulerConfig;
-import com.nkoad.wallbler.main.model.WallblerSchedulerConfigDto;
+import com.nkoad.wallbler.main.model.WallblerScheduler;
+import com.nkoad.wallbler.main.model.WallblerSchedulerDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 public interface WallblerSchedulerConfigMapper {
 
     @Mapping(target = "lastTimeFetched", expression = "java(new Date())")
-    WallblerSchedulerConfig schedulerConfigDtoToSchedulerConfig(WallblerSchedulerConfigDto schedulerConfigDto);
+    WallblerScheduler schedulerDtoToScheduler(WallblerSchedulerDto schedulerDto);
 
-    WallblerSchedulerConfigDto schedulerConfigToSchedulerConfigDto(WallblerSchedulerConfig schedulerConfig);
+    WallblerSchedulerDto schedulerToSchedulerDto(WallblerScheduler scheduler);
 
 }

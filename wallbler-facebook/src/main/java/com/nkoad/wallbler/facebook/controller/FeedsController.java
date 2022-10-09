@@ -1,5 +1,8 @@
 package com.nkoad.wallbler.facebook.controller;
 
+import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
+import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
+import com.nkoad.wallbler.facebook.model.feed.FacebookFeed;
 import com.nkoad.wallbler.facebook.model.feed.FacebookFeedDto;
 import com.nkoad.wallbler.facebook.service.feed.FeedsService;
 import lombok.AllArgsConstructor;
@@ -21,8 +24,23 @@ public class FeedsController {
         return service.getFeeds();
     }
 
+    @GetMapping(path = "/{name}")
+    public FacebookFeedDto getFeedById(@PathVariable String name) {
+        return service.getFeedById(name);
+    }
+
     @PostMapping
     public void setFeed(@RequestBody FacebookFeedDto facebookFeedDto) {
         service.saveFeed(facebookFeedDto);
+    }
+
+    @PutMapping
+    public FacebookFeed editAccountById(@RequestBody FacebookFeedDto facebookFeedDto) {
+        return service.editFeedById(facebookFeedDto);
+    }
+
+    @DeleteMapping(path = "/{name}")
+    public void delFeedById(@PathVariable String name) {
+        service.delFeedById(name);
     }
 }

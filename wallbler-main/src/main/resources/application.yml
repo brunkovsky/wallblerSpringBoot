@@ -40,6 +40,5 @@ spring:
 management:
   endpoints:
     web:
-      base-path: "/admin"
       exposure:
         include: "*"
