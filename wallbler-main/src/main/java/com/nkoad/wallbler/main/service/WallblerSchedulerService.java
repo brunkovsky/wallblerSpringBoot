@@ -23,8 +23,11 @@ public class WallblerSchedulerService {
 
 
     public List<WallblerScheduler> getSchedulers() {
-        return schedulerRepository
-                .findAll();
+        return schedulerRepository.findAll();
+    }
+
+    public List<WallblerScheduler> getSchedulersByType(String type) {
+        return schedulerRepository.findAllByType(type);
     }
 
     public WallblerScheduler getSchedulerById(String name) {
@@ -53,8 +56,7 @@ public class WallblerSchedulerService {
     }
 
     public void delSchedulerById(String name) {
-        schedulerRepository
-                .delete(schedulerRepository.getOne(name));
+        schedulerRepository.delete(schedulerRepository.getOne(name));
     }
 
     private boolean wallblerTypeInvalid(WallblerSchedulerDto schedulerDto) {

@@ -25,8 +25,13 @@ public class Config {
     }
 
     @Bean
-    public Queue wallblerFacebookQueue() {
+    public Queue facebookTypeRegisterQueue() {
         return new Queue("wallbler-type-register");
+    }
+
+    @Bean
+    public Queue facebookFeedRegisterQueue() {
+        return new Queue("wallbler-feed-register");
     }
 
     @Bean
@@ -45,9 +50,16 @@ public class Config {
     }
 
     @Bean
-        public RabbitTemplate registerTemplate(ConnectionFactory connectionFactory) {
+        public RabbitTemplate registerTypeTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setRoutingKey("wallbler-type-register");
+        return rabbitTemplate;
+    }
+
+    @Bean
+        public RabbitTemplate registerFeedTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setRoutingKey("wallbler-feed-register");
         return rabbitTemplate;
     }
 

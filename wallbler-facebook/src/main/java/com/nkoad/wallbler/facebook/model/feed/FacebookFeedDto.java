@@ -1,6 +1,5 @@
 package com.nkoad.wallbler.facebook.model.feed;
 
-import com.nkoad.wallbler.facebook.model.FacebookSchedulerDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +17,6 @@ public class FacebookFeedDto {
 
     private FacebookFeedType feedType;
 
-    private FacebookSchedulerDto scheduler;
+    private String schedulerName;
 
 }

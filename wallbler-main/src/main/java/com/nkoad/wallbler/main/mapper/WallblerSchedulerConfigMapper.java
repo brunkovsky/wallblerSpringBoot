@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", imports = java.util.Date.class)
 public interface WallblerSchedulerConfigMapper {
 
-    @Mapping(target = "lastTimeFetched", expression = "java(new Date())")
+    @Mapping(target = "lastTimeFetched", expression = "java(new Date())") //TODO: only if null
     WallblerScheduler schedulerDtoToScheduler(WallblerSchedulerDto schedulerDto);
 
     WallblerSchedulerDto schedulerToSchedulerDto(WallblerScheduler scheduler);

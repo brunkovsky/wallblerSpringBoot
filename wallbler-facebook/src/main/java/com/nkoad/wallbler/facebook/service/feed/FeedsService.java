@@ -1,9 +1,6 @@
 package com.nkoad.wallbler.facebook.service.feed;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nkoad.wallbler.facebook.mapper.FacebookFeedMapper;
-import com.nkoad.wallbler.facebook.model.WallblerSchedulerDto;
 import com.nkoad.wallbler.facebook.model.feed.FacebookFeed;
 import com.nkoad.wallbler.facebook.model.feed.FacebookFeedDto;
 import com.nkoad.wallbler.facebook.repository.AccountRepository;
@@ -28,7 +25,6 @@ public class FeedsService {
     private final AccountRepository accountRepository;
     private final FacebookFeedMapper facebookFeedMapper;
     private final RabbitTemplate registerTemplate;
-    private final ObjectMapper objectMapper;
 
 
     public List<FacebookFeedDto> getFeeds() {
@@ -83,8 +79,7 @@ public class FeedsService {
 
     @SneakyThrows
     private void registerFeed(FacebookFeedDto facebookFeedDto) {
-        WallblerSchedulerDto schedulerDto = facebookFeedMapper.feedDtoToScheduler(facebookFeedDto);
-        registerTemplate.convertAndSend(objectMapper.writeValueAsString(schedulerDto));
+        registerTemplate.convertAndSend(facebookFeedDto.getSchedulerName());
     }
 
 }

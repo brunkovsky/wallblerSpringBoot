@@ -22,6 +22,11 @@ public class WallblerSchedulerController {
         return service.getSchedulers();
     }
 
+    @GetMapping("/type/{type}")
+    public List<WallblerScheduler> getSchedulersByType(@PathVariable String type) {
+        return service.getSchedulersByType(type);
+    }
+
     @GetMapping(path = "/{name}")
     public WallblerScheduler getSchedulerById(@PathVariable String name) {
         return service.getSchedulerById(name);

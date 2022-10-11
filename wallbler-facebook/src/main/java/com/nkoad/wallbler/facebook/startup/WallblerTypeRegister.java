@@ -13,7 +13,7 @@ public class WallblerTypeRegister {
 //    @Value("${wallbler.type}")
 //    String wallblerType;
 
-    private final RabbitTemplate registerTemplate;
+    private final RabbitTemplate registerTypeTemplate;
 
 
     @PostConstruct
@@ -24,7 +24,7 @@ public class WallblerTypeRegister {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            registerTemplate.convertAndSend("FACEBOOK");
+            registerTypeTemplate.convertAndSend("FACEBOOK");
         }).start();
 
     }
