@@ -10,7 +10,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,22 +28,26 @@ public class WallblerExecutor {
                 .findAll()
                 .stream()
                 .filter(WallblerScheduler::isEnabled)
+                .filter(x -> x.getFeedNames() != null && !x.getFeedNames().isEmpty())
                 .filter(this::isTimeToExecute)
                 .forEach(this::execute);
     }
 
     private boolean isTimeToExecute(WallblerScheduler scheduler) {
-        Date lastTimeFetched = scheduler.getLastTimeFetched();
-        Date newTimeFetched = new Date(new Date().getTime() - scheduler.getPeriod() * 60_000L);
-        return lastTimeFetched.before(newTimeFetched);
+        return Optional.ofNullable(scheduler.getLastTimeFetched())
+                .map(x -> x.before(new Date(new Date().getTime() - scheduler.getPeriod() * 60_000L)))
+                .orElse(true);
     }
 
     private void execute(WallblerScheduler scheduler) {
-        scheduler.getFeedNames().forEach(feedName -> executeRabbitTemplate
-                .convertAndSend(generateExchange(scheduler),
-                        generateRoutingKey(scheduler),
-                        feedName,
-                        getMessagePostProcessor(scheduler)));
+        Optional.ofNullable(scheduler.getFeedNames()).ifPresent(x ->
+                Arrays.stream(x.split("\\|")).sequential()
+                        .filter(feedName -> !feedName.isEmpty())
+                        .forEach(feedName -> executeRabbitTemplate
+                                .convertAndSend(generateExchange(scheduler),
+                                        generateRoutingKey(scheduler),
+                                        feedName,
+                                        getMessagePostProcessor(scheduler))));
     }
 
     private String generateExchange(WallblerScheduler schedulerConfig) {

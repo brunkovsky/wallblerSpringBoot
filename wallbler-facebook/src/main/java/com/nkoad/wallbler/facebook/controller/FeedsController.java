@@ -1,10 +1,8 @@
 package com.nkoad.wallbler.facebook.controller;
 
-import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
 import com.nkoad.wallbler.facebook.model.feed.FacebookFeed;
 import com.nkoad.wallbler.facebook.model.feed.FacebookFeedDto;
-import com.nkoad.wallbler.facebook.service.feed.FeedsService;
+import com.nkoad.wallbler.facebook.service.FeedsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +37,8 @@ public class FeedsController {
         return service.editFeedById(facebookFeedDto);
     }
 
-    @DeleteMapping(path = "/{name}")
-    public void delFeedById(@PathVariable String name) {
-        service.delFeedById(name);
+    @DeleteMapping(path = "/{feedName}/{schedulerName}")
+    public void delFeedById(@PathVariable String feedName, @PathVariable String schedulerName) {
+        service.delFeedById(feedName, schedulerName);
     }
 }

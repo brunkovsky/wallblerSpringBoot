@@ -16,7 +16,14 @@ public interface WallblerSchedulerRepository extends JpaRepository<WallblerSched
     @Query(value = "SELECT * FROM wallbler_scheduler WHERE wallbler_type = :type", nativeQuery = true)
     List<WallblerScheduler> findAllByType(@Param("type") String type);
 
-//    @Query(value = "select *, CASE\n" +
+    @Query(value = "UPDATE wallbler_scheduler SET feed_names = CONCAT(feed_names, IF((feed_names = ''), '', '|'), :feedName) WHERE scheduler_name = :schedulerName AND wallbler_type = :wallblerType", nativeQuery = true)
+    void registerWallbler(@Param("feedName") String feedName, @Param("schedulerName") String schedulerName, @Param("wallblerType") String wallblerType);
+
+    @Query(value = "UPDATE wallbler_scheduler SET feed_names = REPLACE(feed_names, IF(feed_names LIKE CONCAT(:feedName,'%'), CONCAT(:feedName,'|'), CONCAT('|',:feedName)), '') WHERE scheduler_name = :schedulerName AND wallbler_type = :wallblerType", nativeQuery = true)
+    void unRegisterWallbler(@Param("feedName") String feedName, @Param("schedulerName") String schedulerName, @Param("wallblerType") String wallblerType);
+
+
+//    @Query(value = "select *, CASE\n" +`
 //            "           WHEN TIMEDIFF(SUBDATE(NOW(), INTERVAL period MINUTE), last_time_fetched) > 0\n" +
 //            "               THEN true\n" +
 //            "           ELSE false\n" +

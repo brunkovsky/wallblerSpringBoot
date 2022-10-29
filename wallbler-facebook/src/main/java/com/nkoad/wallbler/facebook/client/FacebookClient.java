@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "facebookClient", url = "https://graph.facebook.com/v14.0")
+@FeignClient(value = "facebookClient", url = "https://graph.facebook.com/v15.0")
 public interface FacebookClient {
 
     @GetMapping(value = "/{groupId}")

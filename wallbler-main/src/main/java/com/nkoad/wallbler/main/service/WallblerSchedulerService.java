@@ -1,6 +1,7 @@
 package com.nkoad.wallbler.main.service;
 
 import com.nkoad.wallbler.main.mapper.WallblerSchedulerConfigMapper;
+import com.nkoad.wallbler.main.model.WallblerFeedRegister;
 import com.nkoad.wallbler.main.model.WallblerScheduler;
 import com.nkoad.wallbler.main.model.WallblerSchedulerDto;
 import com.nkoad.wallbler.main.model.WallblerType;
@@ -59,6 +60,16 @@ public class WallblerSchedulerService {
         schedulerRepository.delete(schedulerRepository.getOne(name));
     }
 
+    public void registerWallbler(WallblerFeedRegister feedRegister) {
+        schedulerRepository.registerWallbler(feedRegister.getFeedName(),
+                feedRegister.getSchedulerName(), feedRegister.getWallblerType());
+    }
+
+    public void unRegisterWallbler(WallblerFeedRegister feedRegister) {
+        schedulerRepository.unRegisterWallbler(feedRegister.getFeedName(),
+                feedRegister.getSchedulerName(), feedRegister.getWallblerType());
+    }
+
     private boolean wallblerTypeInvalid(WallblerSchedulerDto schedulerDto) {
         return !wallblerTypeValid(schedulerDto);
     }
@@ -71,13 +82,12 @@ public class WallblerSchedulerService {
     }
 
     private WallblerScheduler saveOrUpdateScheduler(WallblerSchedulerDto schedulerDto) {
-        return schedulerRepository
-                .save(schedulerMapper.schedulerDtoToScheduler(schedulerDto));
+        WallblerScheduler scheduler = schedulerMapper.schedulerDtoToScheduler(schedulerDto);
+        return schedulerRepository.save(scheduler);
     }
 
     private boolean schedulerAlreadyExists(WallblerSchedulerDto schedulerDto) {
-        return schedulerRepository
-                .existsById(schedulerDto.getSchedulerName());
+        return schedulerRepository.existsById(schedulerDto.getSchedulerName());
     }
 
 }

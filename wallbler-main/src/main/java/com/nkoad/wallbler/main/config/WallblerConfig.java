@@ -34,6 +34,12 @@ public class WallblerConfig {
         return new RabbitTemplate(connectionFactory);
     }
 
+
+//    @Bean
+//    public Queue wallblerFeedRegisterQueue() {
+//        return new Queue("wallbler-feed-register");
+//    }
+
 //    @Bean
 //        public RabbitTemplate registerTemplate(ConnectionFactory connectionFactory) {
 //        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);

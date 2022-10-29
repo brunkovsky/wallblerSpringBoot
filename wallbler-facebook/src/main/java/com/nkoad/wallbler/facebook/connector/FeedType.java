@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public abstract class FeedType {
+
     private String endPoint;
     private String fields;
     private String type;

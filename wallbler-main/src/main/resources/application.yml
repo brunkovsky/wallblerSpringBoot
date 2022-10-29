@@ -21,21 +21,6 @@ spring:
   elasticsearch:
     rest:
       uris: "http://192.168.1.14:9200"
-#  rabbitmq:
-#    host: "http://192.168.1.14"
-#    port: 5672
-#    username: "stas"
-#    password: "141292"
-#  cloud:
-#    function:
-#      definition: "uppercase|reverse"
-#    stream:
-#      bindings:
-#        wallblerChannel:
-#          binder: rabbit
-#          destination: wallbler.exchange
-#          contentType: application/json
-#          group: wallblergroup
 
 management:
   endpoints:

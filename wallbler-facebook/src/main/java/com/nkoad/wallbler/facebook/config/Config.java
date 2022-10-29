@@ -9,7 +9,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.retry.support.RetryTemplate;
 
 @Configuration
 public class Config {
@@ -25,18 +24,16 @@ public class Config {
     }
 
     @Bean
-    public Queue facebookTypeRegisterQueue() {
+    public Queue wallblerTypeRegisterQueue() {
+        // not really needed. because this queue should be on after main wallbler service start up
         return new Queue("wallbler-type-register");
     }
 
     @Bean
-    public Queue facebookFeedRegisterQueue() {
-        return new Queue("wallbler-feed-register");
-    }
-
-    @Bean
-    public Queue facebookExecuteQueue() {
-        return new Queue("facebook-execute-queue");
+    public RabbitTemplate registerTypeTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setRoutingKey("wallbler-type-register");
+        return rabbitTemplate;
     }
 
     @Bean
@@ -45,22 +42,13 @@ public class Config {
     }
 
     @Bean
-    public Binding facebookExecuteBinding(Queue facebookExecuteQueue, DirectExchange facebookExecuteExchange) {
+    public Queue facebookExecuteQueue() {
+        return new Queue("facebook-execute-queue");
+    }
+
+    @Bean
+    public Binding facebookExecuteBinding(DirectExchange facebookExecuteExchange, Queue facebookExecuteQueue) {
         return BindingBuilder.bind(facebookExecuteQueue).to(facebookExecuteExchange).with("facebook-execute");
-    }
-
-    @Bean
-        public RabbitTemplate registerTypeTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey("wallbler-type-register");
-        return rabbitTemplate;
-    }
-
-    @Bean
-        public RabbitTemplate registerFeedTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey("wallbler-feed-register");
-        return rabbitTemplate;
     }
 
 }

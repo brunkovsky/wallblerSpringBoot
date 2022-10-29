@@ -1,31 +1,61 @@
 package com.nkoad.wallbler.facebook.connector;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nkoad.wallbler.facebook.model.WallblerItem;
+import lombok.Data;
+import lombok.SneakyThrows;
 import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component("POST")
 public class PostsFeedType extends FeedType {
 
-    PostsFeedType() {
+    private final ObjectMapper objectMapper;
+
+    PostsFeedType(ObjectMapper objectMapper) {
         super("posts",
-                "permalink_url,full_picture,message,created_time,shares,comments.summary(true).limit(0),from");
+                "permalink_url,full_picture,message,description,created_time");
+        this.objectMapper = objectMapper;
     }
 
     @Override
+    @SneakyThrows
     public List<WallblerItem> parseResult(JSONObject jsonObject) {
-        return ((List<Map<String, String>>) jsonObject.get("data")).stream()
-                .map(x -> new WallblerItem(
-                        x.get("permalink_url"),
+        FacebookResponse facebookResponse = objectMapper.readValue(jsonObject.toJSONString(), FacebookResponse.class);
+        return facebookResponse.getData()
+                .stream()
+                .map(data -> new WallblerItem(
+                        data.getPermalinkUrl(),
+                        data.getMessage(),
+                        data.getDescription(),
                         null,
-                        x.get("message"),
+                        data.getFullPicture(),
                         null,
-                        null
-                ))
+                        data.getCreatedTime()))
                 .collect(Collectors.toList());
     }
+
+    @Data
+    static class FacebookResponse {
+
+        private List<FacebookData> data;
+
+        @Data
+        static class FacebookData {
+            @JsonProperty("permalink_url")
+            private String permalinkUrl;
+            @JsonProperty("full_picture")
+            private String fullPicture;
+            private String message;
+            private String description;
+            @JsonProperty("created_time")
+            private Instant createdTime;
+        }
+    }
+
 }

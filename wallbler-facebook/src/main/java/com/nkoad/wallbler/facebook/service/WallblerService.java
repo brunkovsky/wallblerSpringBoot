@@ -2,6 +2,8 @@ package com.nkoad.wallbler.facebook.service;
 
 import com.nkoad.wallbler.facebook.connector.Connector;
 import com.nkoad.wallbler.facebook.connector.FeedType;
+import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
+import com.nkoad.wallbler.facebook.model.feed.FacebookFeed;
 import com.nkoad.wallbler.facebook.repository.AccountRepository;
 import com.nkoad.wallbler.facebook.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +22,10 @@ public class WallblerService {
 
 
     public void fetch(String feedName) {
-//        FacebookFeedConfig feedConfig = feedRepository.findByFeedName(feedName);
-//        FacebookAccountConfig accountConfig = accountRepository.findByAccountName(feedConfig.getAccountName());
-//        FeedType feedType = feedMap.get(feedConfig.getFeedType().name());
-//        connector.loadData(accountConfig, feedType);
+        FacebookFeed feedConfig = feedRepository.findByFeedName(feedName);
+        FacebookAccount accountConfig = accountRepository.findByAccountName(feedConfig.getAccountName());
+        FeedType feedType = feedMap.get(feedConfig.getFeedType().name());
+        connector.loadData(accountConfig, feedType);
     }
 
 }

@@ -2,7 +2,7 @@ package com.nkoad.wallbler.facebook.controller;
 
 import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
 import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
-import com.nkoad.wallbler.facebook.service.account.AccountsService;
+import com.nkoad.wallbler.facebook.service.AccountsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

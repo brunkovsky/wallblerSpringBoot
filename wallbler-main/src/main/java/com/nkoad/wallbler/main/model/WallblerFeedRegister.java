@@ -1,22 +1,16 @@
 package com.nkoad.wallbler.main.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WallblerSchedulerDto {
-
-    private String schedulerName;
+public class WallblerFeedRegister {
 
     private String wallblerType;
-
-    private boolean enabled;
-
-    private int period;
+    private String feedName;
+    private String schedulerName;
 
 }

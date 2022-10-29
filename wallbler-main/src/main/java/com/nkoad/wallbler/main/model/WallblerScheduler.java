@@ -5,9 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -22,8 +23,7 @@ public class WallblerScheduler {
 
     private String wallblerType;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> feedNames;
+    private String feedNames;
 
     private boolean enabled;
 
