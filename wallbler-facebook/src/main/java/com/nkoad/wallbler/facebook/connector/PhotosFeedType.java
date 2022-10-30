@@ -26,11 +26,14 @@ public class PhotosFeedType extends FeedType {
 
     @Override
     @SneakyThrows
-    public List<WallblerItem> parseResult(JSONObject jsonObject) {
+    public List<WallblerItem> parseResult(JSONObject jsonObject, String feedName) {
         FacebookResponse facebookResponse = objectMapper.readValue(jsonObject.toJSONString(), FacebookResponse.class);
         return facebookResponse.getData()
                 .stream()
                 .map(data -> new WallblerItem(
+                        data.getId(),
+                        "FACEBOOK",
+                        feedName,
                         data.getLink(),
                         data.getName(),
                         null,
@@ -48,6 +51,7 @@ public class PhotosFeedType extends FeedType {
 
         @Data
         static class FacebookData {
+            String id;
             private String link;
             private List<FacebookDataImage> images;
             private String name;

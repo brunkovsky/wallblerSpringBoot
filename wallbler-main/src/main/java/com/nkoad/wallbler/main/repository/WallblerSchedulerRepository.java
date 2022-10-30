@@ -10,17 +10,28 @@ import java.util.List;
 
 public interface WallblerSchedulerRepository extends JpaRepository<WallblerScheduler, String> {
 
-    @Query(value = "UPDATE wallbler_scheduler SET last_time_fetched = :lastTimeFetched WHERE scheduler_name = :schedulerName", nativeQuery = true)
+    @Query(value = "UPDATE wallbler_scheduler " +
+            "SET last_time_fetched = :lastTimeFetched " +
+            "WHERE scheduler_name = :schedulerName", nativeQuery = true)
     void updateLastTimeFetched(@Param("lastTimeFetched") Date lastTimeFetched, @Param("schedulerName") String schedulerName);
 
-    @Query(value = "SELECT * FROM wallbler_scheduler WHERE wallbler_type = :type", nativeQuery = true)
+    @Query(value = "SELECT * FROM wallbler_scheduler " +
+            "WHERE wallbler_type = :type", nativeQuery = true)
     List<WallblerScheduler> findAllByType(@Param("type") String type);
 
-    @Query(value = "UPDATE wallbler_scheduler SET feed_names = CONCAT(feed_names, IF((feed_names = ''), '', '|'), :feedName) WHERE scheduler_name = :schedulerName AND wallbler_type = :wallblerType", nativeQuery = true)
+    @Query(value = "UPDATE wallbler_scheduler " +
+            "SET feed_names = IF(feed_names IS NULL, :feedName, CONCAT(feed_names, IF(feed_names = '', '', '|'), :feedName)) " +
+            "WHERE scheduler_name = :schedulerName AND wallbler_type = :wallblerType", nativeQuery = true)
     void registerWallbler(@Param("feedName") String feedName, @Param("schedulerName") String schedulerName, @Param("wallblerType") String wallblerType);
 
-    @Query(value = "UPDATE wallbler_scheduler SET feed_names = REPLACE(feed_names, IF(feed_names LIKE CONCAT(:feedName,'%'), CONCAT(:feedName,'|'), CONCAT('|',:feedName)), '') WHERE scheduler_name = :schedulerName AND wallbler_type = :wallblerType", nativeQuery = true)
+    @Query(value = "UPDATE wallbler_scheduler " +
+            "SET feed_names = REPLACE(feed_names, IF(feed_names LIKE CONCAT(:feedName,'%'), CONCAT(:feedName,'|'), CONCAT('|',:feedName)), '') " +
+            "WHERE scheduler_name = :schedulerName AND wallbler_type = :wallblerType", nativeQuery = true)
     void unRegisterWallbler(@Param("feedName") String feedName, @Param("schedulerName") String schedulerName, @Param("wallblerType") String wallblerType);
+
+    @Query(value = "SELECT scheduler_name FROM wallbler_scheduler " +
+            "WHERE feed_names LIKE CONCAT('%', :feedName, '%')", nativeQuery = true)
+    List<String> findSchedulersByFeedName(@Param("feedName") String feedName);
 
 
 //    @Query(value = "select *, CASE\n" +`

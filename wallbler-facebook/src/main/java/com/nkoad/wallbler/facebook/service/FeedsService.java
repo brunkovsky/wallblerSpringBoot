@@ -50,10 +50,10 @@ public class FeedsService {
         registerFeed(facebookFeedDto);
     }
 
-    public void delFeedById(String feedName, String schedulerName) {
+    public void delFeedById(String feedName) {
         FacebookFeed facebookFeed = feedRepository.getOne(feedName);
         feedRepository.delete(facebookFeed);
-        unRegisterFeed(facebookFeed, schedulerName);
+        unRegisterFeed(facebookFeed);
     }
 
     public FacebookFeed editFeedById(FacebookFeedDto facebookFeedDto) {
@@ -91,9 +91,9 @@ public class FeedsService {
         feignClient.registerWallbler(feedRegister);
     }
 
-    private void unRegisterFeed(FacebookFeed facebookFeed, String schedulerName) {
+    private void unRegisterFeed(FacebookFeed facebookFeed) {
         WallblerFeedRegister feedRegister = new WallblerFeedRegister("FACEBOOK",
-                facebookFeed.getFeedName(), schedulerName);
+                facebookFeed.getFeedName(), null);
         feignClient.unRegisterWallbler(feedRegister);
     }
 }

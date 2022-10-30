@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface FeedRepository extends JpaRepository<FacebookFeed, String> {
 
     @Query(value = "SELECT * FROM facebook_feed WHERE feed_name = :feedName", nativeQuery = true)
-    FacebookFeed findByFeedName(@Param("feedName") String feedName);
+    Optional<FacebookFeed> findByFeedName(@Param("feedName") String feedName);
 
 }

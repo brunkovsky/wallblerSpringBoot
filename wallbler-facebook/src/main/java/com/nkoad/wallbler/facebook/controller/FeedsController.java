@@ -37,8 +37,8 @@ public class FeedsController {
         return service.editFeedById(facebookFeedDto);
     }
 
-    @DeleteMapping(path = "/{feedName}/{schedulerName}")
-    public void delFeedById(@PathVariable String feedName, @PathVariable String schedulerName) {
-        service.delFeedById(feedName, schedulerName);
+    @DeleteMapping(path = "/{feedName}")
+    public void delFeedById(@PathVariable String feedName) {
+        service.delFeedById(feedName);
     }
 }

@@ -21,11 +21,11 @@ public class Connector {
     private final WallblerFeignClient wallblerFeignClient;
 
     @SneakyThrows
-    public void loadData(FacebookAccount facebookAccount, FeedType feedType) {
-        JSONObject jsonObject = facebookClient.loadData(facebookAccount, feedType);
-        List<WallblerItem> wallblerItems = feedType.parseResult(jsonObject);
-        System.out.println(wallblerItems);
-//        wallblerFeignClient.writeWallblerItems(wallblerItems);
+    public void loadData(FacebookAccount facebookAccount, FeedType feedType, String feedName) {
+        JSONObject facebookItems = facebookClient.loadData(facebookAccount, feedType);
+        List<WallblerItem> wallblerItems = feedType.parseResult(facebookItems, feedName);
+        log.debug("Got {} items from facebook", wallblerItems.size());
+        wallblerFeignClient.writeWallblerItems(wallblerItems);
     }
 
 }

@@ -16,7 +16,6 @@ public class FacebookListener {
 
     @RabbitListener(queues = "facebook-execute-queue")
     public void facebookExecute(String feedName) {
-        System.out.println("received from facebook-execute-queue: " + feedName);
         wallblerService.fetch(feedName);
     }
 

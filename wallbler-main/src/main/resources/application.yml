@@ -22,6 +22,17 @@ spring:
     rest:
       uris: "http://192.168.1.14:9200"
 
+logging:
+  level:
+    org:
+      elasticsearch:
+        client: ERROR
+    com:
+      nkoad:
+        wallbler:
+          main:
+            service: DEBUG
+
 management:
   endpoints:
     web:

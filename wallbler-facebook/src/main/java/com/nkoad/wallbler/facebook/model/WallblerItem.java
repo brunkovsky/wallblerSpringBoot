@@ -9,6 +9,9 @@ import java.time.Instant;
 @AllArgsConstructor // add Builder
 public class WallblerItem {
 
+    private String id;
+    private String type;
+    private String feedName;
     private String link;
     private String title;
     private String message;

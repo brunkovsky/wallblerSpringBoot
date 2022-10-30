@@ -66,8 +66,11 @@ public class WallblerSchedulerService {
     }
 
     public void unRegisterWallbler(WallblerFeedRegister feedRegister) {
-        schedulerRepository.unRegisterWallbler(feedRegister.getFeedName(),
-                feedRegister.getSchedulerName(), feedRegister.getWallblerType());
+        List<String> schedulerNames = schedulerRepository.findSchedulersByFeedName(feedRegister.getFeedName());
+        for (String schedulerName : schedulerNames) {
+            schedulerRepository.unRegisterWallbler(feedRegister.getFeedName(),
+                    schedulerName, feedRegister.getWallblerType());
+        }
     }
 
     private boolean wallblerTypeInvalid(WallblerSchedulerDto schedulerDto) {

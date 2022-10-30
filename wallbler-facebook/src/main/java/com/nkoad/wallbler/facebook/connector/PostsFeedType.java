@@ -25,11 +25,14 @@ public class PostsFeedType extends FeedType {
 
     @Override
     @SneakyThrows
-    public List<WallblerItem> parseResult(JSONObject jsonObject) {
+    public List<WallblerItem> parseResult(JSONObject jsonObject, String feedName) {
         FacebookResponse facebookResponse = objectMapper.readValue(jsonObject.toJSONString(), FacebookResponse.class);
         return facebookResponse.getData()
                 .stream()
                 .map(data -> new WallblerItem(
+                        data.getId(),
+                        "FACEBOOK",
+                        feedName,
                         data.getPermalinkUrl(),
                         data.getMessage(),
                         data.getDescription(),
@@ -47,6 +50,7 @@ public class PostsFeedType extends FeedType {
 
         @Data
         static class FacebookData {
+            String id;
             @JsonProperty("permalink_url")
             private String permalinkUrl;
             @JsonProperty("full_picture")
