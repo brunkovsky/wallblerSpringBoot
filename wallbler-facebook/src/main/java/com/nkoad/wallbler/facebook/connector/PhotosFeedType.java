@@ -26,7 +26,7 @@ public class PhotosFeedType extends FeedType {
 
     @Override
     @SneakyThrows
-    public List<WallblerItem> parseResult(JSONObject jsonObject, String feedName) {
+    public List<WallblerItem> parseResult(JSONObject jsonObject, String feedName, boolean isApprovedByDefault) {
         FacebookResponse facebookResponse = objectMapper.readValue(jsonObject.toJSONString(), FacebookResponse.class);
         return facebookResponse.getData()
                 .stream()
@@ -40,7 +40,8 @@ public class PhotosFeedType extends FeedType {
                         data.getImages().get(data.getImages().size() - 1).getSource(),
                         data.getImages().get(0).getSource(),
                         null,
-                        data.getCreatedTime()))
+                        data.getCreatedTime(),
+                        isApprovedByDefault))
                 .collect(Collectors.toList());
     }
 

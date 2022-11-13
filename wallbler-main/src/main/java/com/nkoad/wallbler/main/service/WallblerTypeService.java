@@ -13,7 +13,6 @@ public class WallblerTypeService {
 
     private final WallblerTypeRepository typeRepository;
 
-
     public void registerWallblerType(String typeName) {
         typeRepository.save(new WallblerType(typeName, true));
     }

@@ -18,22 +18,10 @@ public class Config {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setUsername("stas");
         connectionFactory.setPassword("141292");
-        connectionFactory.setHost("192.168.1.14");
+//        connectionFactory.setHost("192.168.1.14");
+        connectionFactory.setHost("83.29.81.59");
         connectionFactory.setPort(5672);
         return connectionFactory;
-    }
-
-    @Bean
-    public Queue wallblerTypeRegisterQueue() {
-        // not really needed. because this queue should be on after main wallbler service start up
-        return new Queue("wallbler-type-register");
-    }
-
-    @Bean
-    public RabbitTemplate registerTypeTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey("wallbler-type-register");
-        return rabbitTemplate;
     }
 
     @Bean
@@ -49,6 +37,21 @@ public class Config {
     @Bean
     public Binding facebookExecuteBinding(DirectExchange facebookExecuteExchange, Queue facebookExecuteQueue) {
         return BindingBuilder.bind(facebookExecuteQueue).to(facebookExecuteExchange).with("facebook-execute");
+    }
+
+    @Bean
+    public DirectExchange facebookAccessTokenExchange() {
+        return new DirectExchange("facebook-access-token-exchange");
+    }
+
+    @Bean
+    public Queue facebookAccessTokenQueue() {
+        return new Queue("facebook-access-token-queue");
+    }
+
+    @Bean
+    public Binding facebookAccessTokenBinding(DirectExchange facebookAccessTokenExchange, Queue facebookAccessTokenQueue) {
+        return BindingBuilder.bind(facebookAccessTokenQueue).to(facebookAccessTokenExchange).with("facebook-access-token");
     }
 
 }

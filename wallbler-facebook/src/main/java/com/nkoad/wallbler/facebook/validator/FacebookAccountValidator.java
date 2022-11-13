@@ -18,12 +18,11 @@ public class FacebookAccountValidator {
     public boolean validate(FacebookAccountDto facebookAccountDto) {
         try {
             JSONObject screenName = facebookClient.getScreenName(facebookAccountDto.getGroupId(), facebookAccountDto.getAccessToken());
-            System.out.println(screenName);
+            log.debug("Passed the validation. set 'valid' to true. Screen name: {}", screenName);
         } catch (Exception e) {
             log.warn("{} did not pass the validation. set 'valid' to false", facebookAccountDto);
             return false;
         }
-        log.debug("{} passed the validation. set 'valid' to true", facebookAccountDto);
         return true;
     }
 

@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WallblerFeedRegister {
+public class WallblerRegisterAccount {
 
-    private String wallblerType;
-    private String feedName;
+    private String accountName;
     private String schedulerName;
 
 }

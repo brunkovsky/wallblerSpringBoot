@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.facebook.startup;
 
+import com.nkoad.wallbler.facebook.client.WallblerFeignClient;
 import lombok.AllArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,20 +13,11 @@ public class WallblerTypeRegister {
 //    @Value("${wallbler.type}")
 //    String wallblerType;
 
-    private final RabbitTemplate registerTypeTemplate;
-
+    private final WallblerFeignClient feignClient;
 
     @PostConstruct
     public void registerWallblerType() {
-        new Thread(() -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            registerTypeTemplate.convertAndSend("FACEBOOK");
-        }).start();
-
+        feignClient.registerWallblerType("FACEBOOK");
     }
 
 }

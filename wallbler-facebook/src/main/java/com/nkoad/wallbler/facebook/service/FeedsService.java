@@ -1,9 +1,8 @@
 package com.nkoad.wallbler.facebook.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nkoad.wallbler.facebook.client.WallblerFeignClient;
 import com.nkoad.wallbler.facebook.mapper.FacebookFeedMapper;
-import com.nkoad.wallbler.facebook.model.WallblerFeedRegister;
+import com.nkoad.wallbler.facebook.model.RegisterFeed;
 import com.nkoad.wallbler.facebook.model.feed.FacebookFeed;
 import com.nkoad.wallbler.facebook.model.feed.FacebookFeedDto;
 import com.nkoad.wallbler.facebook.repository.AccountRepository;
@@ -11,7 +10,6 @@ import com.nkoad.wallbler.facebook.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -86,14 +84,14 @@ public class FeedsService {
 
     @SneakyThrows
     private void registerFeed(FacebookFeedDto facebookFeedDto) {
-        WallblerFeedRegister feedRegister = new WallblerFeedRegister("FACEBOOK",
-                facebookFeedDto.getFeedName(), facebookFeedDto.getSchedulerName());
-        feignClient.registerWallbler(feedRegister);
+        feignClient.registerFeed(new RegisterFeed(
+                "FACEBOOK" + "::" + facebookFeedDto.getFeedName(),
+                facebookFeedDto.getSchedulerName()));
     }
 
     private void unRegisterFeed(FacebookFeed facebookFeed) {
-        WallblerFeedRegister feedRegister = new WallblerFeedRegister("FACEBOOK",
-                facebookFeed.getFeedName(), null);
-        feignClient.unRegisterWallbler(feedRegister);
+        feignClient.unRegisterFeed(new RegisterFeed(
+                "FACEBOOK" + "::" + facebookFeed.getFeedName()));
     }
+
 }

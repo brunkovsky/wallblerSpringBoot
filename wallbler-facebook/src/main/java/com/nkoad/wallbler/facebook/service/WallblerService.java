@@ -31,4 +31,8 @@ public class WallblerService {
             }, () -> log.error("Can't find account by accountName: '{}' from accountRepository", facebookFeed.getAccountName()));
         }, () -> log.error("Can't find feed by feedName: '{}' from feedRepository", feedName));
     }
+
+    public void refreshAccessToken(String accountName) {
+        log.info("refreshing access token : " + accountName);
+    }
 }

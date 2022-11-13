@@ -20,6 +20,6 @@ public abstract class FeedType {
         this.fields = fields;
     }
 
-    public abstract List<WallblerItem> parseResult(JSONObject jsonObject, String feedName);
+    public abstract List<WallblerItem> parseResult(JSONObject jsonObject, String feedName, boolean isApprovedByDefault);
 
 }

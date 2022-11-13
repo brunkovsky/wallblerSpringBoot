@@ -19,46 +19,15 @@ public class WallblerConfig {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setUsername("stas");
         connectionFactory.setPassword("141292");
-        connectionFactory.setHost("192.168.1.14");
+//        connectionFactory.setHost("192.168.1.14");
+        connectionFactory.setHost("83.29.81.59");
         connectionFactory.setPort(5672);
         return connectionFactory;
-    }
-
-    @Bean
-    public Queue wallblerFacebookQueue() {
-        return new Queue("wallbler-type-register");
     }
 
     @Bean
     public RabbitTemplate executeRabbitTemplate(ConnectionFactory connectionFactory) {
         return new RabbitTemplate(connectionFactory);
     }
-
-
-//    @Bean
-//    public Queue wallblerFeedRegisterQueue() {
-//        return new Queue("wallbler-feed-register");
-//    }
-
-//    @Bean
-//        public RabbitTemplate registerTemplate(ConnectionFactory connectionFactory) {
-//        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-//        rabbitTemplate.setExchange("wallbler-register");
-//        rabbitTemplate.setRoutingKey("register-feed");
-//        return rabbitTemplate;
-//    }
-
-//    @Bean
-//    public RestHighLevelClient client() {
-//        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-//                .connectedTo("localhost:9200")
-//                .build();
-//        return RestClients.create(clientConfiguration).rest();
-//    }
-//
-//    @Bean
-//    public ElasticsearchOperations elasticsearchTemplate() {
-//        return new ElasticsearchRestTemplate(client());
-//    }
 
 }

@@ -29,5 +29,6 @@ public class WallblerItem {
     private String videoLink;
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ss.SSSZZ")
     private Instant createdAt;
+    private boolean approved;
 
 }

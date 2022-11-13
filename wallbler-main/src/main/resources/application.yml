@@ -1,26 +1,21 @@
-server:
-  port: 8080
-
 spring:
   application:
     name: wallbler
-  datasource:
-    url: "jdbc:mariadb://192.168.1.14:3306/data"
-    username: "stas"
-    password: "141292"
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: false
-    properties:
-      hibernate:
-        dialect: "org.hibernate.dialect.MySQL5Dialect"
-        format_sql: true
   config:
     import: "optional:configserver:http://localhost:8888"
-  elasticsearch:
-    rest:
-      uris: "http://192.168.1.14:9200"
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      post:
+        enabled: true
 
 logging:
   level:
@@ -32,9 +27,3 @@ logging:
         wallbler:
           main:
             service: DEBUG
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"

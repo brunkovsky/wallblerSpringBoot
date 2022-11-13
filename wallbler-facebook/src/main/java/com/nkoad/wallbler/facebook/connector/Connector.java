@@ -23,7 +23,7 @@ public class Connector {
     @SneakyThrows
     public void loadData(FacebookAccount facebookAccount, FeedType feedType, String feedName) {
         JSONObject facebookItems = facebookClient.loadData(facebookAccount, feedType);
-        List<WallblerItem> wallblerItems = feedType.parseResult(facebookItems, feedName);
+        List<WallblerItem> wallblerItems = feedType.parseResult(facebookItems, feedName, facebookAccount.isApprovedByDefault());
         log.debug("Got {} items from facebook", wallblerItems.size());
         wallblerFeignClient.writeWallblerItems(wallblerItems);
     }

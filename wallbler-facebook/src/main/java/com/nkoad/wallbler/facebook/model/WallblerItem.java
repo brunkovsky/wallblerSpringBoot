@@ -19,5 +19,6 @@ public class WallblerItem {
     private String photoLink;
     private String videoLink;
     private Instant createdAt;
+    private boolean approved;
 
 }

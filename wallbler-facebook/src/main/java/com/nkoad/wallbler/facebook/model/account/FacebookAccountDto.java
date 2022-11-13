@@ -15,5 +15,6 @@ public class FacebookAccountDto {
     private String accessToken;
     private String groupId;
     private boolean valid;
+    private String schedulerName;
 
 }
