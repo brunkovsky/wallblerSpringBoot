@@ -14,7 +14,7 @@ public class FacebookAccessTokenListener {
     private final WallblerService wallblerService;
 
     @RabbitListener(queues = "facebook-access-token-queue")
-    public void facebookExecute(String accountName) {
+    public void facebookexecutor(String accountName) {
         wallblerService.refreshAccessToken(accountName);
     }
 

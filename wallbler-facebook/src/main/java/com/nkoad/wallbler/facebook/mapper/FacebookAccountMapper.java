@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.facebook.mapper;
 
-import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
+import com.nkoad.wallbler.facebook.model.FacebookAccount;
+import com.nkoad.wallbler.facebook.model.FacebookAccountDto;
 import com.nkoad.wallbler.facebook.validator.FacebookAccountValidator;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.main.executor;
 
-import com.nkoad.wallbler.main.model.WallblerFeedScheduler;
-import com.nkoad.wallbler.main.repository.WallblerSchedulerFeedRepository;
+import com.nkoad.wallbler.main.model.WallblerExecutorScheduler;
+import com.nkoad.wallbler.main.repository.WallblerExecutorSchedulerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,32 +13,32 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class WallblerFeedExecutor extends WallblerExecutor {
+public class WallblerFetchExecutor extends WallblerExecutor {
 
-    private final WallblerSchedulerFeedRepository feedRepository;
-    private final RabbitTemplate executeRabbitTemplate;
+    private final WallblerExecutorSchedulerRepository feedRepository;
+    private final RabbitTemplate executorRabbitTemplate;
 
     @Scheduled(cron = "0 * * ? * *")
     public void schedule() {
         feedRepository
                 .findAll()
                 .stream()
-                .filter(WallblerFeedScheduler::isEnabled)
-                .filter(x -> x.getFeedNames() != null && !x.getFeedNames().isEmpty())
+                .filter(WallblerExecutorScheduler::isEnable)
+                .filter(x -> x.getWallblerNames() != null && !x.getWallblerNames().isEmpty())
                 .filter(x -> isTimeToExecute(x.getLastTimeFetched(), x.getPeriod()))
-                .forEach(this::feedExecute);
+                .forEach(this::executor);
     }
 
-    private void feedExecute(WallblerFeedScheduler scheduler) {
-        Optional.ofNullable(scheduler.getFeedNames()).ifPresent(wallblerAccountNames ->
+    private void executor(WallblerExecutorScheduler scheduler) {
+        Optional.ofNullable(scheduler.getWallblerNames()).ifPresent(wallblerAccountNames ->
                 Arrays.stream(wallblerAccountNames.split("\\|"))
                         .filter(wallblerAccountName -> !wallblerAccountName.isEmpty())
                         .forEach(wallblerAccountName -> {
                             String wallblerType = wallblerAccountName.split("::")[0];
                             String accountName = wallblerAccountName.split("::")[1];
-                            executeRabbitTemplate
-                                    .convertAndSend(wallblerType.toLowerCase() + "-execute-exchange",
-                                            wallblerType.toLowerCase() + "-execute",
+                            executorRabbitTemplate
+                                    .convertAndSend(wallblerType.toLowerCase() + "-executor-exchange",
+                                            wallblerType.toLowerCase() + "-executor",
                                             accountName,
                                             getMessagePostProcessor(wallblerType,
                                                     () -> feedRepository.updateLastTimeFetched(new Date(),

@@ -15,15 +15,15 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WallblerAccountScheduler {
+public class WallblerExecutorScheduler {
 
     @Id
     @Column(length = 128)
     private String schedulerName;
 
-    private String accountNames;
+    private String wallblerNames;
 
-    private boolean enabled;
+    private boolean enable;
 
     private int period;
 

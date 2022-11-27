@@ -1,9 +1,8 @@
 package com.nkoad.wallbler.facebook.client;
 
 import com.nkoad.wallbler.facebook.model.RegisterAccount;
-import com.nkoad.wallbler.facebook.model.RegisterFeed;
+import com.nkoad.wallbler.facebook.model.Scheduler;
 import com.nkoad.wallbler.facebook.model.WallblerItem;
-import com.nkoad.wallbler.facebook.model.account.AccountScheduler;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,26 +14,32 @@ import java.util.List;
 @FeignClient(value = "wallblerClient", url = "http://localhost:8080/api/wallbler")
 public interface WallblerFeignClient {
 
-    @GetMapping("/account/scheduler")
-    List<AccountScheduler> getAllSchedulers();
+    @GetMapping("/accesstoken/scheduler")
+    List<Scheduler> getAllAccessTokenSchedulers();
 
-    @GetMapping("/account/scheduler/{schedulerName}")
-    AccountScheduler getSchedulerByName(@PathVariable("schedulerName") String wallblerType);
+    @GetMapping("/accesstoken/scheduler/{schedulerName}")
+    Scheduler getAccessTokenSchedulerByName(@PathVariable("schedulerName") String schedulerName);
 
-    @PostMapping(value = "/register/type/{wallblerType}")
+    @GetMapping("/executor/scheduler/{schedulerName}")
+    Scheduler getExecutorSchedulerByName(@PathVariable("schedulerName") String schedulerName);
+
+    @GetMapping("/executor/scheduler")
+    List<Scheduler> getAllExecutorSchedulers();
+
+    @PostMapping(value = "/type/register/{wallblerType}")
     void registerWallblerType(@PathVariable("wallblerType") String wallblerType);
 
-    @PostMapping(value = "/register/account")
+    @PostMapping(value = "/accesstoken/register")
     void registerAccount(RegisterAccount registerAccount);
 
-    @DeleteMapping(value = "/register/account")
+    @DeleteMapping(value = "/accesstoken/register")
     void unRegisterAccount(RegisterAccount registerAccount);
 
-    @PostMapping(value = "/register/feed")
-    void registerFeed(RegisterFeed registerFeed);
+    @PostMapping(value = "/executor/register")
+    void registerExecutor(RegisterAccount registerAccount);
 
-    @DeleteMapping(value = "/register/feed")
-    void unRegisterFeed(RegisterFeed registerFeed);
+    @DeleteMapping(value = "/executor/register")
+    void unRegisterExecutor(RegisterAccount registerAccount);
 
     @PostMapping(value = "/write")
     void writeWallblerItems(List<WallblerItem> wallblerItems);

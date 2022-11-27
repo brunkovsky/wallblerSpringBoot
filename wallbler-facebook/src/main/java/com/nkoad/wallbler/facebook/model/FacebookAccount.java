@@ -1,11 +1,13 @@
-package com.nkoad.wallbler.facebook.model.account;
+package com.nkoad.wallbler.facebook.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Data
 @Entity
@@ -19,7 +21,10 @@ public class FacebookAccount {
     private String accountName;
     private String accessToken;
     private String groupId;
+    private String facebookType;
     private boolean valid;
+    private String executorScheduler;
+    private String accessTokenScheduler;
     private boolean isApprovedByDefault;
 
 }

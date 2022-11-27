@@ -6,6 +6,7 @@ import org.springframework.messaging.SubscribableChannel;
 public interface WorkUnitsSink {
 
     String CHANNEL_NAME = "worksChannel";
+
     @Input
     SubscribableChannel worksChannel();
 

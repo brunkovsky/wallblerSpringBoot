@@ -9,14 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableRabbit
 @AllArgsConstructor
-public class FacebookExecuteListener {
+public class FacebookExecutorListener {
 
     private final WallblerService wallblerService;
 
-
-    @RabbitListener(queues = "facebook-execute-queue")
-    public void facebookExecute(String feedName) {
-        wallblerService.fetch(feedName);
+    @RabbitListener(queues = "facebook-executor-queue")
+    public void facebookExecute(String name) {
+        wallblerService.fetch(name);
     }
 
 }

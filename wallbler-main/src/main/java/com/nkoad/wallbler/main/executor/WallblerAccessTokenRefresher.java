@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.main.executor;
 
-import com.nkoad.wallbler.main.model.WallblerAccountScheduler;
-import com.nkoad.wallbler.main.repository.WallblerSchedulerAccountRepository;
+import com.nkoad.wallbler.main.model.WallblerAccessTokenScheduler;
+import com.nkoad.wallbler.main.repository.WallblerAccessTokenSchedulerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,30 +13,30 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class WallblerAccountExecutor extends WallblerExecutor {
+public class WallblerAccessTokenRefresher extends WallblerExecutor {
 
-    private final WallblerSchedulerAccountRepository accountRepository;
-    private final RabbitTemplate executeRabbitTemplate;
+    private final WallblerAccessTokenSchedulerRepository accountRepository;
+    private final RabbitTemplate executorRabbitTemplate;
 
     @Scheduled(cron = "0 * * ? * *")
     public void schedule() {
         accountRepository
                 .findAll()
                 .stream()
-                .filter(WallblerAccountScheduler::isEnabled)
-                .filter(x -> x.getAccountNames() != null && !x.getAccountNames().isEmpty())
+                .filter(WallblerAccessTokenScheduler::isEnable)
+                .filter(x -> x.getWallblerNames() != null && !x.getWallblerNames().isEmpty())
                 .filter(x -> isTimeToExecute(x.getLastTimeFetched(), x.getPeriod()))
                 .forEach(this::accessTokenRefresh);
     }
 
-    private void accessTokenRefresh(WallblerAccountScheduler scheduler) {
-        Optional.ofNullable(scheduler.getAccountNames()).ifPresent(wallblerAccountNames ->
+    private void accessTokenRefresh(WallblerAccessTokenScheduler scheduler) {
+        Optional.ofNullable(scheduler.getWallblerNames()).ifPresent(wallblerAccountNames ->
                 Arrays.stream(wallblerAccountNames.split("\\|"))
                         .filter(wallblerAccountName -> !wallblerAccountName.isEmpty())
                         .forEach(wallblerAccountName -> {
                             String wallblerType = wallblerAccountName.split("::")[0];
                             String accountName = wallblerAccountName.split("::")[1];
-                            executeRabbitTemplate
+                            executorRabbitTemplate
                                     .convertAndSend(wallblerType.toLowerCase() + "-access-token-exchange",
                                             wallblerType.toLowerCase() + "-access-token",
                                             accountName,

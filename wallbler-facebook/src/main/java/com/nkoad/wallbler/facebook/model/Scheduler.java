@@ -1,4 +1,4 @@
-package com.nkoad.wallbler.facebook.model.account;
+package com.nkoad.wallbler.facebook.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,16 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountScheduler {
+public class Scheduler {
 
     private String schedulerName;
-    private String accountNames;
-    private boolean enabled;
+
+    private String wallblerNames;
+
+    private boolean enable;
+
     private int period;
+
     private Date lastTimeFetched;
 
 }

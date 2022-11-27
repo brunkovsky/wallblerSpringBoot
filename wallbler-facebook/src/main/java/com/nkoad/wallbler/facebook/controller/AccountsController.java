@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.facebook.controller;
 
-import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
+import com.nkoad.wallbler.facebook.model.FacebookAccount;
+import com.nkoad.wallbler.facebook.model.FacebookAccountDto;
 import com.nkoad.wallbler.facebook.service.AccountsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +30,10 @@ public class AccountsController {
         return service.saveAccount(facebookAccountDto);
     }
 
-    @PutMapping
-    public FacebookAccount editAccountById(@RequestBody FacebookAccountDto facebookAccountDto) {
-        return service.editAccountById(facebookAccountDto);
+    @PutMapping(path = "/{accountName}")
+    public void editAccountById(@PathVariable String accountName,
+                                @RequestBody FacebookAccountDto facebookAccountDto) {
+        service.editAccountById(accountName, facebookAccountDto);
     }
 
     @DeleteMapping(path = "/{name}")

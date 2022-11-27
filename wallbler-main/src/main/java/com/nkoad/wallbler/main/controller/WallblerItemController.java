@@ -17,7 +17,6 @@ public class WallblerItemController {
 
     private final WallblerItemService service;
 
-
     @PostMapping("/write")
     public void writeWallbler(@RequestBody List<WallblerItem> wallblerItems) {
         service.writeWallblerItems(wallblerItems);

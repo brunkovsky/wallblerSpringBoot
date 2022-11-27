@@ -1,7 +1,7 @@
 package com.nkoad.wallbler.facebook.validator;
 
 import com.nkoad.wallbler.facebook.client.FacebookClient;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
+import com.nkoad.wallbler.facebook.model.FacebookAccountDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class FacebookAccountValidator {
 
     private final FacebookClient facebookClient;
-
 
     public boolean validate(FacebookAccountDto facebookAccountDto) {
         try {

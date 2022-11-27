@@ -15,15 +15,15 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WallblerFeedScheduler {
+public class WallblerAccessTokenScheduler {
 
     @Id
     @Column(length = 128)
     private String schedulerName;
 
-    private String feedNames;
+    private String wallblerNames;
 
-    private boolean enabled;
+    private boolean enable;
 
     private int period;
 

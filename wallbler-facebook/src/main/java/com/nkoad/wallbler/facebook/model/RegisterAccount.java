@@ -5,15 +5,15 @@ import lombok.Data;
 @Data
 public class RegisterAccount {
 
-    private String accountName;
+    private String name;
     private String schedulerName;
 
-    public RegisterAccount(String accountName) {
-        this.accountName = accountName;
+    public RegisterAccount(String name) {
+        this.name = name;
     }
 
-    public RegisterAccount(String accountName, String schedulerName) {
-        this.accountName = accountName;
+    public RegisterAccount(String name, String schedulerName) {
+        this.name = name;
         this.schedulerName = schedulerName;
     }
 

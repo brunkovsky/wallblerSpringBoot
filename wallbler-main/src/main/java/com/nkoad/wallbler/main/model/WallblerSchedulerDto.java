@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 public class WallblerSchedulerDto {
 
     private String schedulerName;
-    private boolean enabled;
+
+    private boolean enable;
+
     private int period;
 
 }

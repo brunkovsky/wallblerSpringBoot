@@ -2,10 +2,10 @@ package com.nkoad.wallbler.facebook.service;
 
 import com.nkoad.wallbler.facebook.client.WallblerFeignClient;
 import com.nkoad.wallbler.facebook.mapper.FacebookAccountMapper;
+import com.nkoad.wallbler.facebook.model.FacebookAccount;
+import com.nkoad.wallbler.facebook.model.FacebookAccountDto;
 import com.nkoad.wallbler.facebook.model.RegisterAccount;
-import com.nkoad.wallbler.facebook.model.account.AccountScheduler;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccount;
-import com.nkoad.wallbler.facebook.model.account.FacebookAccountDto;
+import com.nkoad.wallbler.facebook.model.Scheduler;
 import com.nkoad.wallbler.facebook.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -44,24 +44,34 @@ public class AccountsService {
     }
 
     public FacebookAccount saveAccount(FacebookAccountDto facebookAccountDto) {
-        if (accountAlreadyExists(facebookAccountDto)) {
+        if (accountExists(facebookAccountDto)) {
             throw new IllegalArgumentException("The account provided already exists: "
                     + facebookAccountDto.getAccountName());
         }
-        if (!isSchedulerExists(facebookAccountDto.getSchedulerName())) {
-            log.error("Can't create the account because the scheduler provided does not exist. " +
-                            "Scheduler: {} Available schedulers: {} ",
-                    facebookAccountDto.getSchedulerName(), getSchedulerNames());
-            throw new IllegalArgumentException("The scheduler provided does not exist: "
-                    + facebookAccountDto.getSchedulerName());
+        if (facebookAccountDto.getAccessTokenScheduler() != null) {
+            if (!accessTokenSchedulerExists(facebookAccountDto)) {
+                log.error("Can't create the account because the scheduler provided does not exist. " +
+                                "Scheduler: {} Available schedulers: {}",
+                        facebookAccountDto.getAccessTokenScheduler(), getAccessTokenSchedulerNames());
+                throw new IllegalArgumentException("The scheduler provided does not exist: "
+                        + facebookAccountDto.getAccessTokenScheduler());
+            }
+            registerAccessToken(facebookAccountDto);
         }
-        registerAccount(facebookAccountDto);
-        return saveOrUpdateAccount(facebookAccountDto);
+        if (!executorSchedulerExists(facebookAccountDto)) {
+            log.error("Can't create the account because the scheduler provided does not exist. " +
+                            "Scheduler: {} Available schedulers: {}",
+                    facebookAccountDto.getExecutorScheduler(), getExecutorSchedulerNames());
+            throw new IllegalArgumentException("The scheduler provided does not exist: "
+                    + facebookAccountDto.getExecutorScheduler());
+        }
+        registerExecutor(facebookAccountDto);
+        return accountRepository.save(facebookAccountMapper.accountDtoToAccount(facebookAccountDto));
     }
 
-    public FacebookAccount editAccountById(FacebookAccountDto facebookAccountDto) {
-        if (accountAlreadyExists(facebookAccountDto)) {
-            return saveOrUpdateAccount(facebookAccountDto);
+    public void editAccountById(String accountName, FacebookAccountDto facebookAccountDto) {
+        if (accountExists(accountName)) {
+            updateAccount(accountName, facebookAccountDto);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -69,42 +79,83 @@ public class AccountsService {
     public void delAccountById(String name) {
         FacebookAccount facebookAccount = accountRepository.getOne(name);
         unRegisterAccount(facebookAccount);
+        unRegisterExecutor(facebookAccount);
         accountRepository.delete(facebookAccount);
     }
 
-    private FacebookAccount saveOrUpdateAccount(FacebookAccountDto facebookAccountDto) {
+    private void updateAccount(String accountName, FacebookAccountDto facebookAccountDto) {
         FacebookAccount facebookAccount = facebookAccountMapper.accountDtoToAccount(facebookAccountDto);
-        return accountRepository.save(facebookAccount);
+        accountRepository.updateAccount(accountName, facebookAccount.getGroupId(),
+                facebookAccount.getAccessToken(), facebookAccount.getFacebookType());
     }
 
-    private boolean accountAlreadyExists(FacebookAccountDto facebookAccountDto) {
-        return accountRepository.existsById(facebookAccountDto.getAccountName());
+    private boolean accountExists(FacebookAccountDto facebookAccountDto) {
+        return accountExists(facebookAccountDto.getAccountName());
     }
 
-    private boolean isSchedulerExists(String schedulerName) {
+    private boolean accountExists(String accountName) {
+        return accountRepository.existsById(accountName);
+    }
+
+    private boolean executorSchedulerExists(FacebookAccountDto facebookAccountDto) {
+        return executorSchedulerExists(facebookAccountDto.getExecutorScheduler());
+    }
+
+    private boolean executorSchedulerExists(String schedulerName) {
         try {
-            feignClient.getSchedulerByName(schedulerName);
+            feignClient.getExecutorSchedulerByName(schedulerName);
         } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    private List<String> getSchedulerNames() {
-        return feignClient.getAllSchedulers().stream()
-                .map(AccountScheduler::getSchedulerName)
+    private boolean accessTokenSchedulerExists(FacebookAccountDto facebookAccountDto) {
+        return accessTokenSchedulerExists(facebookAccountDto.getAccessTokenScheduler());
+    }
+
+    private boolean accessTokenSchedulerExists(String schedulerName) {
+        try {
+            feignClient.getAccessTokenSchedulerByName(schedulerName);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    private List<String> getExecutorSchedulerNames() {
+        return feignClient.getAllExecutorSchedulers().stream()
+                .map(Scheduler::getSchedulerName)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getAccessTokenSchedulerNames() {
+        return feignClient.getAllAccessTokenSchedulers().stream()
+                .map(Scheduler::getSchedulerName)
                 .collect(Collectors.toList());
     }
 
     @SneakyThrows
-    private void registerAccount(FacebookAccountDto facebookAccountDto) {
+    private void registerAccessToken(FacebookAccountDto facebookAccountDto) {
         feignClient.registerAccount(new RegisterAccount(
                 "FACEBOOK" + "::" + facebookAccountDto.getAccountName(),
-                facebookAccountDto.getSchedulerName()));
+                facebookAccountDto.getAccessTokenScheduler()));
     }
 
     private void unRegisterAccount(FacebookAccount facebookAccount) {
         feignClient.unRegisterAccount(new RegisterAccount(
+                "FACEBOOK" + "::" + facebookAccount.getAccountName()));
+    }
+
+    @SneakyThrows
+    private void registerExecutor(FacebookAccountDto facebookAccountDto) {
+        feignClient.registerExecutor(new RegisterAccount(
+                "FACEBOOK" + "::" + facebookAccountDto.getAccountName(),
+                facebookAccountDto.getExecutorScheduler()));
+    }
+
+    private void unRegisterExecutor(FacebookAccount facebookAccount) {
+        feignClient.unRegisterExecutor(new RegisterAccount(
                 "FACEBOOK" + "::" + facebookAccount.getAccountName()));
     }
 
