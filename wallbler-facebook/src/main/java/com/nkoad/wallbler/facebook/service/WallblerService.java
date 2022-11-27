@@ -21,9 +21,10 @@ public class WallblerService {
 
     public void fetch(String name) {
         accountRepository.findByAccountName(name).ifPresentOrElse(account -> {
-            Optional.ofNullable(typeMap.get(account.getFeedType().name())).ifPresentOrElse(feedType -> {
-                connector.loadData(account, feedType);
-            }, () -> log.error("Can't find feedType by key: '{}' from the map: {}", account.getAccessToken(), typeMap.keySet()));
+            Optional.ofNullable(typeMap.get(account.getFacebookType()))
+                    .ifPresentOrElse(feedType -> connector.loadData(account, feedType), () ->
+                            log.error("Can't find feedType by key: '{}' from the map: {}",
+                                    account.getAccessToken(), typeMap.keySet()));
         }, () -> log.error("Can't find feed by feedName: '{}' from feedRepository", name));
     }
 

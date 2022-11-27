@@ -16,7 +16,7 @@ public class FacebookAccountDto {
     private String groupId;
     private String facebookType;
     private boolean valid;
-    private String executorScheduler;
     private String accessTokenScheduler;
+    private String executorScheduler;
 
 }

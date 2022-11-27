@@ -44,7 +44,6 @@ public class WallblerAccessTokenRefresher extends WallblerExecutor {
                                                     () -> accountRepository.updateLastTimeFetched(new Date(),
                                                             scheduler.getSchedulerName())));
                         }));
-
     }
 
 }

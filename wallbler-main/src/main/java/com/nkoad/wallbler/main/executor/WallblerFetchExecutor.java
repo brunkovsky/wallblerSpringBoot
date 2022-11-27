@@ -26,10 +26,10 @@ public class WallblerFetchExecutor extends WallblerExecutor {
                 .filter(WallblerExecutorScheduler::isEnable)
                 .filter(x -> x.getWallblerNames() != null && !x.getWallblerNames().isEmpty())
                 .filter(x -> isTimeToExecute(x.getLastTimeFetched(), x.getPeriod()))
-                .forEach(this::executor);
+                .forEach(this::executeFetch);
     }
 
-    private void executor(WallblerExecutorScheduler scheduler) {
+    private void executeFetch(WallblerExecutorScheduler scheduler) {
         Optional.ofNullable(scheduler.getWallblerNames()).ifPresent(wallblerAccountNames ->
                 Arrays.stream(wallblerAccountNames.split("\\|"))
                         .filter(wallblerAccountName -> !wallblerAccountName.isEmpty())
@@ -44,7 +44,6 @@ public class WallblerFetchExecutor extends WallblerExecutor {
                                                     () -> feedRepository.updateLastTimeFetched(new Date(),
                                                             scheduler.getSchedulerName())));
                         }));
-
     }
 
 }

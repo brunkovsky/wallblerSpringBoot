@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "api/wallbler/type/register")
+@RequestMapping(path = "api/wallbler/type")
 public class WallblerTypeRegisterController {
 
     private final WallblerTypeService service;
@@ -19,7 +19,7 @@ public class WallblerTypeRegisterController {
         return service.getTypes();
     }
 
-    @PostMapping("/{wallblerType}")
+    @PostMapping("/register/{wallblerType}")
     public void registerWallblerType(@PathVariable String wallblerType) {
         service.registerWallblerType(wallblerType);
     }
