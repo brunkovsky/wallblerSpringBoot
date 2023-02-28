@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: "jdbc:mariadb://83.27.243.109:3306/data"
-    username: "stas"
+    url: "jdbc:mariadb://83.10.232.89:3306/data"
+    username: "pi"
     password: "141292"
   elasticsearch:
     rest:
-      uris: "http://83.27.243.109:9200"
+      uris: "http://83.10.232.89:9200"

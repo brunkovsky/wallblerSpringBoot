@@ -17,8 +17,8 @@ public class Config {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setUsername("stas");
         connectionFactory.setPassword("141292");
-//        connectionFactory.setHost("192.168.1.14");
-        connectionFactory.setHost("83.27.243.109");
+        connectionFactory.setHost("192.168.1.14");
+//        connectionFactory.setHost("83.10.232.89");
         connectionFactory.setPort(5672);
         return connectionFactory;
     }

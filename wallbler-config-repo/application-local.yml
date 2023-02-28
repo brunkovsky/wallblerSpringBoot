@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: "jdbc:mariadb://192.168.1.14:3306/data"
-    username: "stas"
+    username: "pi"
     password: "141292"
   elasticsearch:
     rest:

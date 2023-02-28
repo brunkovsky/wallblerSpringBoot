@@ -20,7 +20,7 @@ public class PostType extends FacebookType {
 
     PostType(ObjectMapper objectMapper) {
         super("posts",
-                "permalink_url,full_picture,message,description,created_time");
+                "permalink_url,full_picture,message,actions,created_time");
         this.objectMapper = objectMapper;
     }
 
