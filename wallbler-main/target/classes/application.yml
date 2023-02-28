@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: wallbler
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  cloud:
+    stream:
+      bindings:
+        cleanupEventsOutput:
+          binder: rabbit
+          destination: cleanup.exchange
+          contentType: application/json
+        cleanupEventsInput:
+          binder: rabbit
+          destination: cleanup.exchange
+          contentType: application/json
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      post:
+        enabled: true
+
+logging:
+  level:
+    org:
+      elasticsearch:
+        client: ERROR
+    com:
+      nkoad:
+        wallbler:
+          main:
+            service: DEBUG
